@@ -1,0 +1,918 @@
+libname data "\\tspc-nas\中心資源\統-民意調查\09.民調其他分析";
+
+%macro a;
+%do y=101 %to 110;
+proc import
+file="\\tspc-nas\中心資源\統-民意調查\04.歷年民調資料(原始資料檔)\&y.年自殺防治DATA.csv"
+  out=data&y.;
+run;
+data data&y.a;
+set data&y.;
+year=&y.;
+id+1;
+run;
+%end;%mend;%a;
+
+data data110b(keep=year w v14a v15a v17_2a v18a v19a v21_2a age bsrs1-bsrs5 sex v36a id v40);
+set data110a(keep=year w2 v14 v15 v17_2 v18 v19 v21_2 v31-v35 v36 v46 v40 id);
+format v14a v15a age v18a v17_2a v19a z2.;
+
+if v14='1' then v14a='1';
+else if v14='2' then v14a='0';
+else if v14='98' then v14a='98';
+
+if v15='1' then v15a='1';
+else if v15='2' then v15a='0';
+else if v15='98' then v15a='98';
+
+if v40 in ('1') then age='1';
+else if v40 in ('2','3','4','5') then age='2';
+else if v40 in ('6','7','8','9','10') then age='3';
+else if v40 in ('11','12','13','14') then age='4';
+else if v40 in ('98') then age='98';
+
+v17_2a=v17_2*1;
+
+if v18='1' then v18a='1';
+else if v18='2' then v18a='0';
+else if v18='98' then v18a='98';
+
+if v19='1' then v19a='1';
+else if v19='2' then v19a='0';
+else if v19='98' then v19a='98';
+
+v21_2a=v21_2*1; 
+
+rename
+w2=w
+v31=bsrs1
+v32=bsrs2
+v33=bsrs3
+v34=bsrs4
+v35=bsrs5
+v46=sex
+v36=v36a;
+run;
+
+proc freq data=data110b;
+tables v15a v19a;
+run;
+
+data data109b(keep=year w v14a v15a v17_2a v18a v19a v21_2a age bsrs1-bsrs5 sex v36a id v40);
+set data109a(keep=year w2 v14 v15 v17_2 v18 v19 v21_2 v31-v35 v46 v36 v40 id);
+format v14a v15a age v18a v17_2a v19a v21_2a z2.;
+
+if v14='1' then v14a='1';
+else if v14='2' then v14a='0';
+else if v14='98' then v14a='98';
+
+if v15='1' then v15a='1';
+else if v15='2' then v15a='0';
+else if v15='98' then v15a='98';
+
+if v40 in ('1') then age='1';
+else if v40 in ('2','3','4','5') then age='2';
+else if v40 in ('6','7','8','9','10') then age='3';
+else if v40 in ('11','12','13','14') then age='4';
+else if v40 in ('98') then age='98';
+
+v17_2a=v17_2*1;
+
+if v18='1' then v18a='1';
+else if v18='2' then v18a='0';
+else if v18='98' then v18a='98';
+
+if v19='1' then v19a='1';
+else if v19='2' then v19a='0';
+else if v19='98' then v19a='98';
+
+v21_2a=v21_2*1; 
+
+rename
+w2=w
+v31=bsrs1
+v32=bsrs2
+v33=bsrs3
+v34=bsrs4
+v35=bsrs5
+v46=sex
+v36=v36a
+;
+run;
+
+/*age:
+1=<20歲
+2=20-39歲
+3=40-64歲
+4=>=65歲*/
+
+/*bsrs1=睡眠困難、譬如難以入睡、易醒或早醒
+bsrs2=感覺緊張不安
+bsrs3=覺得容易苦惱或動怒
+bsrs4=感覺憂鬱、心情低落
+bsrs5=覺得比不上別人*/
+
+data data108b(keep=year w v14a v15a v17_2a v18a v19a v21_2a age bsrs1-bsrs5 sex v36a id v40);
+set data108a(keep=year w2 v14 v15 v17_2 v31-v35 v18 v19 v21_2 v36 v40 v46  id);
+format v14a v15a v17_2a v18a v19a v21_2a age z2.;
+
+if v14='1' then v14a='1';
+else if v14='2' then v14a='0';
+else if v14='98' then v14a='98';
+
+if v15='1' then v15a='1';
+else if v15='2' then v15a='0';
+else if v15='98' then v15a='98';
+
+v17_2a=v17_2*1;
+
+if v40 in ('1') then age='1';
+else if v40 in ('2','3','4','5') then age='2';
+else if v40 in ('6','7','8','9','10') then age='3';
+else if v40 in ('11','12','13','14') then age='4';
+else if v40 in ('98') then age='98';
+
+if v18='1' then v18a='1';
+else if v18='2' then v18a='0';
+else if v18='98' then v18a='98';
+
+if v19='1' then v19a='1';
+else if v19='2' then v19a='0';
+else if v19='98' then v19a='98';
+
+v21_2a=v21_2*1; 
+
+
+rename
+w2=w
+v31=bsrs1
+v32=bsrs2
+v33=bsrs3
+v34=bsrs4
+v35=bsrs5
+v46=sex
+v36=v36a
+;
+run;
+
+data data107b(keep=year w v14a v15a v17_2a v18a v19a v21_2a age bsrs1-bsrs5 sex v36a id v40);
+set data107a(keep=year w2 v14 v15 v17_2 v31-v35 v46 v18 v19 v21_2 v36 v40 id);
+format v14a v15a v17_2a v18a v19a v21_2a age z2.;
+
+if v14='1' then v14a='1';
+else if v14='2' then v14a='0';
+else if v14='98' then v14a='98';
+
+if v15='1' then v15a='1';
+else if v15='2' then v15a='0';
+else if v15='98' then v15a='98';
+
+v17_2a=v17_2*1;
+
+if v40 in ('1') then age='1';
+else if v40 in ('2','3','4','5') then age='2';
+else if v40 in ('6','7','8','9','10') then age='3';
+else if v40 in ('11','12','13','14') then age='4';
+else if v40 in ('98') then age='98';
+
+if v18='1' then v18a='1';
+else if v18='2' then v18a='0';
+else if v18='98' then v18a='98';
+
+if v19='1' then v19a='1';
+else if v19='2' then v19a='0';
+else if v19='98' then v19a='98';
+
+v21_2a=v21_2*1; 
+
+rename
+w2=w
+v31=bsrs1
+v32=bsrs2
+v33=bsrs3
+v34=bsrs4
+v35=bsrs5
+v46=sex
+v36=v36a
+;
+run;
+
+data data106b(keep=year w v14a v15a v17_2a v18a v19a v21_2a age bsrs1-bsrs5 sex v36a id v40);
+set data106a(keep=year w2 v14 v15 v17_2 v30 id v18 v19 v21_2 v31-v35 v40 v46 v36);
+format v14a v15a v17_2a v18a v19a v21_2a age z2.;
+
+if v14='1' then v14a='1';
+else if v14='2' then v14a='0';
+else if v14='98' then v14a='98';
+
+if v15='1' then v15a='1';
+else if v15='2' then v15a='0';
+else if v15='98' then v15a='98';
+
+v17_2a=v17_2*1;
+
+if v40 in ('1') then age='1';
+else if v40 in ('2','3','4','5') then age='2';
+else if v40 in ('6','7','8','9','10') then age='3';
+else if v40 in ('11','12','13','14') then age='4';
+else if v40 in ('98') then age='98';
+
+if v18='1' then v18a='1';
+else if v18='2' then v18a='0';
+else if v18='98' then v18a='98';
+
+if v19='1' then v19a='1';
+else if v19='2' then v19a='0';
+else if v19='98' then v19a='98';
+
+v21_2a=v21_2*1; 
+ 
+rename
+w2=w
+v31=bsrs1
+v32=bsrs2
+v33=bsrs3
+v34=bsrs4
+v35=bsrs5
+v46=sex
+v36=v36a
+;
+run;
+
+data data105b(keep=year w v14a v15a v17_2a v18a v19a v21_2a bsrs1-bsrs5 sex v36a age id v40);
+set data105a(keep=year w2 v14 v15 v17_2 v21_2 v31-v35 v40 v46 v18 v19 v36 id);
+format v14a v15a v17_2a v18a v19a v21_2a age z2.;
+
+if v14='1' then v14a='1';
+else if v14='2' then v14a='0';
+else if v14='98' then v14a='98';
+
+if v15='1' then v15a='1';
+else if v15='2' then v15a='0';
+else if v15='98' then v15a='98';
+ 
+v17_2a=v17_2*1;
+ 
+if v40 in ('1') then age='1';
+else if v40 in ('2','3','4','5') then age='2';
+else if v40 in ('6','7','8','9','10') then age='3';
+else if v40 in ('11','12','13','14') then age='4';
+else if v40 in ('98') then age='98';
+
+if v18='1' then v18a='1';
+else if v18='2' then v18a='0';
+else if v18='98' then v18a='98';
+
+if v19='1' then v19a='1';
+else if v19='2' then v19a='0';
+else if v19='98' then v19a='98';
+
+v21_2a=v21_2*1; 
+
+rename
+w2=w
+v31=bsrs1
+v32=bsrs2
+v33=bsrs3
+v34=bsrs4
+v35=bsrs5
+v46=sex
+v36=v36a
+;
+run;
+
+data data104b(keep=year w v14a v15a v17_2a  v18a v19a v21_2a age bsrs1-bsrs5 sex v36a id v40);
+set data104a(keep=year w2 v14 v15 v17_2 v18 v19 v21_2 v31-v35 v40 v46 v36 id);
+format v14a v15a v17_2a v18a v19a v21_2a age z2.;
+
+if v14='1' then v14a='1';
+else if v14='0' then v14a='0';
+else if v14='98' then v14a='98';
+
+if v15='1' then v15a='1';
+else if v15='0' then v15a='0';
+else if v15='98' then v15a='98';
+
+ 
+ v17_2a=v17_2*1;
+
+if v40 in ('1') then age='1';
+else if v40 in ('2','3','4','5') then age='2';
+else if v40 in ('6','7','8','9','10') then age='3';
+else if v40 in ('11','12','13','14') then age='4';
+else if v40 in ('98') then age='98';
+
+if v18='1' then v18a='1';
+else if v18='0' then v18a='0';
+else if v18='98' then v18a='98';
+
+if v19='1' then v19a='1';
+else if v19='0' then v19a='0';
+else if v19='98' then v19a='98';
+
+v21_2a=v21_2*1; 
+
+rename
+w2=w
+v31=bsrs1
+v32=bsrs2
+v33=bsrs3
+v34=bsrs4
+v35=bsrs5
+v46=sex
+v36=v36a
+;
+run;
+
+proc freq data=data104a;
+tables v19 ;
+run;
+
+data data103b(keep=year w  v14a v15a v17_2a v18a v19a v21_2a age bsrs1-bsrs5 sex v36a id v40);
+set data103a(keep=year w2 v14 v15 v17_2 v18 v19 v21_2 v31-v35 v40 v46 v36 id);
+format v14a v15a v17_2a v18a v19a v21_2a age z2.;
+
+if v14='1' then v14a='1';
+else if v14='2' then v14a='0';
+else if v14='98' then v14a='98';
+
+if v15='1' then v15a='1';
+else if v15='2' then v15a='0';
+else if v15='98' then v15a='98';
+
+v17_2a=v17_2*1;
+
+ if v40 in ('1') then age='1';
+else if v40 in ('2','3','4','5') then age='2';
+else if v40 in ('6','7','8','9','10') then age='3';
+else if v40 in ('11','12','13','14') then age='4';
+else if v40 in ('98') then age='98';
+
+if v18='1' then v18a='1';
+else if v18='2' then v18a='0';
+else if v18='98' then v18a='98';
+
+if v19='1' then v19a='1';
+else if v19='2' then v19a='0';
+else if v19='98' then v19a='98';
+
+v21_2a=v21_2*1; 
+
+rename
+w2=w
+v31=bsrs1
+v32=bsrs2
+v33=bsrs3
+v34=bsrs4
+v35=bsrs5
+v46=sex
+v36=v36a
+;
+run;
+
+data data102b(keep=year w v14a v15a v17_2a v18a v19a v21_2a age bsrs1-bsrs5 sex v36a id v40);
+set data102a(keep=year w3 v14 v15 v17_2 v18 v19 v21_2 v31-v35 v40 v46 v36 id);
+format v14a v15a v17_2a v18a v19a v21_2a age z2.;
+
+if v14='1' then v14a='1';
+else if v14='2' then v14a='0';
+else if v14='98' then v14a='98';
+
+if v15='1' then v15a='1';
+else if v15='2' then v15a='0';
+else if v15='98' then v15a='98';
+
+v17_2a=v17_2*1;
+
+ if v40 in ('1') then age='1';
+else if v40 in ('2','3','4','5') then age='2';
+else if v40 in ('6','7','8','9','10') then age='3';
+else if v40 in ('11','12','13','14') then age='4';
+else if v40 in ('98') then age='98';
+
+if v18='1' then v18a='1';
+else if v18='2' then v18a='0';
+else if v18='98' then v18a='98';
+
+if v19='1' then v19a='1';
+else if v19='2' then v19a='0';
+else if v19='98' then v19a='98';
+
+v21_2a=v21_2*1; 
+
+rename
+w3=w
+v31=bsrs1
+v32=bsrs2
+v33=bsrs3
+v34=bsrs4
+v35=bsrs5
+v46=sex 
+v36=v36a
+;
+run;
+
+data data101b(keep=year w v14a v15a v17_2a v18a v19a v21_2a age bsrs1-bsrs5 sex v36a id v40);
+set data101a(keep=year w3 v14 v15 v17_2 v21_2 v31-v35 v40 v46 v18 v19 v36 id);
+format v14a v15a v17_2a v18a v19a v21_2a age z2.;
+
+if v14='1' then v14a='1';
+else if v14='2' then v14a='0';
+else if v14='98' then v14a='98';
+
+if v15='1' then v15a='1';
+else if v15='2' then v15a='0';
+else if v15='98' then v15a='98';
+
+v17_2a=v17_2*1;
+ 
+if v40 in ('1') then age='1';
+else if v40 in ('2','3','4','5') then age='2';
+else if v40 in ('6','7','8','9','10') then age='3';
+else if v40 in ('11','12','13','14') then age='4';
+else if v40 in ('98') then  age='98';
+
+if v18='1' then v18a='1';
+else if v18='2' then v18a='0';
+else if v18='98' then v18a='98';
+
+if v19='1' then v19a='1';
+else if v19='2' then v19a='0';
+else if v19='98' then v19a='98';
+
+v21_2a=v21_2*1; 
+
+rename
+w3=w
+v31=bsrs1
+v32=bsrs2
+v33=bsrs3
+v34=bsrs4
+v35=bsrs5
+v46=sex
+v36=v36a
+;
+run;
+
+proc append base=data101110 data=data110b;run;
+proc append base=data101110 data=data109b;run;
+proc append base=data101110 data=data108b;run;
+proc append base=data101110 data=data107b;run;
+proc append base=data101110 data=data106b;run;
+proc append base=data101110 data=data105b;run;
+proc append base=data101110 data=data104b;run;
+proc append base=data101110 data=data103b;run;
+proc append base=data101110 data=data102b;run;
+proc append base=data101110 data=data101b;run;
+
+/*proc export data=data101110 
+	outfile = "\\Tspc-nas\中心資源\統-民意調查\03.歷年民調資料合併\02.結果\95-108年自殺防治DATA.sav" DBMS=sav REPLACE;
+run;*/
+
+/*v14=請問您一生中是否曾經認真地想過自殺？
+v15=請問您最近一年是否仍認真地想過要自殺？
+v18=請問您一生中是否有過自殺行為？
+v19	請問您最近一年是否仍有過自殺行為?*/
+
+proc freq data=data101110;
+tables  v14a*v18a v19a/norow nocol nopercent ;
+weight w;
+run;
+
+proc freq data=data101110;
+tables  bsrs1-bsrs5/norow nocol nopercent ;
+weight w;
+run;
+
+data data101110a;
+set data101110;
+
+if bsrs1=98 then bsrs1a=0;
+else bsrs1a=bsrs1;
+
+if bsrs2=98 then bsrs2a=0;
+else bsrs2a=bsrs2;
+
+if bsrs3=98 then bsrs3a=0;
+else bsrs3a=bsrs3;
+
+if bsrs4=98 then bsrs4a=0;
+else bsrs4a=bsrs4;
+
+if bsrs5=98 then bsrs5a=0;
+else bsrs5a=bsrs5;
+run;
+
+proc freq data=data101110a;
+tables bsrs1a bsrs2a bsrs3a bsrs4a bsrs5a /norow nocol nopercent  ;
+weight w;
+run;
+
+proc freq data=data101110a;
+tables bsrs1*bsrs1a
+bsrs2*bsrs2a
+bsrs3*bsrs3a
+bsrs4*bsrs4a
+bsrs5*bsrs5a/norow nocol nopercent;
+run;
+
+data data101110b;
+set data101110a;
+bsrs5_total=bsrs1a+bsrs2a+bsrs3a+bsrs4a+bsrs5a;
+run;
+
+data data101110c;
+set data101110b;
+format v17_2b z2.;
+
+if bsrs5_total<6  then bsrs5_bi=0;
+else bsrs5_bi=1;
+
+if v17_2a in ('1','2','3') then v17_2b='1'; /*19歲以下*/
+else if v17_2a in ('4','5','6','7') then v17_2b='2'; /*20-39歲*/
+else if v17_2a in ('8','9','10','11','12') then v17_2b='3'; /*40-64歲*/
+else if v17_2a in ('13','14','15','16') then v17_2b='4'; /*65歲以上*/
+else if v17_2a in ('98') then v17_2b='98';
+run;
+
+proc freq data=data101110c;
+tables v17_2a*v17_2b v17_2a/norow nocol nopercent  ;
+weight w;
+run;
+
+proc freq data=data101110c;
+tables bsrs5_total*bsrs5_bi/norow nocol nopercent  ;
+weight w;
+run;
+
+proc freq data=data101110c;
+tables (v14a v15a v18a v19a bsrs5_bi v36a v17_2b)*sex/norow nocol nopercent  ;
+weight w;
+run;
+
+proc freq data=data101110c;
+tables v17_2a*sex/norow nocol nopercent  ;
+weight w;
+run;
+
+proc freq data=data101110c;
+tables (v14a v15a v18a v19a bsrs5_bi v36a v17_2b)*age/norow nocol nopercent  ;
+weight w;
+run;
+
+proc freq data=data101110c;
+tables (v14a v15a v18a v19a bsrs5_bi v36a v17_2b)*bsrs5_bi/norow nocol nopercent  ;
+weight w;
+run;
+
+/*卡方值計算-sex*/
+proc freq data=data101110c;
+tables v14a*sex/norow nocol nopercent chisq ;
+where v14a^=98;
+weight w;
+run;
+
+proc freq data=data101110c;
+tables v15a*sex/norow nocol nopercent chisq ;
+where v15a^=98;
+weight w;
+run;
+
+proc freq data=data101110c;
+tables v18a*sex/norow nocol nopercent chisq ;
+where v18a^=98;
+weight w;
+run;
+
+proc freq data=data101110c;
+tables v19a*sex/norow nocol nopercent chisq ;
+where v19a^=98;
+weight w;
+run;
+
+proc freq data=data101110c;
+tables bsrs5_bi*sex/norow nocol nopercent chisq ;
+where bsrs5_bi^=98;
+weight w;
+run;
+
+proc freq data=data101110c;
+tables v36a*sex/norow nocol nopercent chisq ;
+where v36a^=98;
+weight w;
+run;
+
+proc freq data=data101110c;
+tables v17_2b*sex/norow nocol nopercent chisq ;
+where v17_2b^=98;
+weight w;
+run;
+
+
+/*秘書長要a資料*/
+proc freq data=data101110c;
+where bsrs5_bi=1;
+tables v40*year/norow nocol nopercent chisq; ;
+weight w;
+run;
+
+/*卡方值計算-bsrs5_bi*/
+proc freq data=data101110c;
+tables v14a*bsrs5_bi/norow nocol nopercent chisq;
+where v14a^=98;
+weight w;
+run;
+
+proc freq data=data101110c;
+tables v15a*bsrs5_bi/norow nocol nopercent chisq;
+where v15a^=98;
+weight w;
+run;
+
+proc freq data=data101110c;
+tables v18a*bsrs5_bi/norow nocol nopercent chisq;
+where v18a^=98;
+weight w;
+run;
+
+proc freq data=data101110c;
+tables v19a*bsrs5_bi/norow nocol nopercent chisq;
+where v19a^=98;
+weight w;
+run;
+
+proc freq data=data101110c;
+tables bsrs5_bi*bsrs5_bi/norow nocol nopercent chisq;
+where bsrs5_bi^=98;
+weight w;
+run;
+
+proc freq data=data101110c;
+tables v36a*bsrs5_bi/norow nocol nopercent chisq;
+where v36a^=98;
+weight w;
+run;
+
+proc freq data=data101110c;
+tables v17_2b*bsrs5_bi/norow nocol nopercent chisq;
+where v17_2b^=98;
+weight w;
+run;
+
+proc means data=data101110c mean std;
+var bsrs1a bsrs2a bsrs3a bsrs4a bsrs5a bsrs5_total;
+weight w;
+run;
+
+/*卡方值計算-age*/
+data data101110d;
+set data101110c;
+if age=98 then delete;
+run;
+
+proc freq data=data101110d;
+tables v14a*age/norow nocol nopercent  chisq;
+where v14a^=98;
+weight w;
+run;
+
+proc freq data=data101110d;
+tables v15a*age/norow nocol nopercent  chisq;
+where v15a^=98;
+weight w;
+run;
+
+proc freq data=data101110d;
+tables v18a*age/norow nocol nopercent  chisq;
+where v18a^=98;
+weight w;
+run;
+
+proc freq data=data101110d;
+tables v19a*age/norow nocol nopercent  chisq;
+where v19a^=98 ;
+weight w;
+run;
+
+proc freq data=data101110d;
+tables bsrs5_bi*age/norow nocol nopercent  chisq;
+where bsrs5_bi^=98;
+weight w;
+run;
+
+proc freq data=data101110d;
+tables v36a*age/norow nocol nopercent  chisq;
+where v36a^=98;
+weight w;
+run;
+
+proc freq data=data101110d;
+tables v17_2b*age/norow nocol nopercent  chisq;
+where v17_2b^=98;
+weight w;
+run;
+
+/**logistic regression**/
+data data101110e;
+set data101110c;
+
+if bsrs1a=0 then  bsrs1b=0;
+else bsrs1b=1;
+
+if bsrs2a=0 then  bsrs2b=0;
+else  bsrs2b=1;
+
+if bsrs3a=0 then  bsrs3b=0;
+else bsrs3b=1;
+
+if bsrs4a=0 then  bsrs4b=0;
+else bsrs4b=1;
+
+if bsrs5a=0 then  bsrs5b=0;
+else bsrs5b=1;
+
+if v14a=0 then v14b=0;
+else if v14a=1 then v14b=1;
+else v14b=0;
+
+if v15a=0 then v15b=0;
+else if v15a=1 then v15b=1;
+else v15b=0;
+
+if v18a=0 then v18b=0;
+else if v18a=1 then v18b=1;
+else v18b=0;
+
+if v19a=0 then v19b=0;
+else if v19a=1 then v19b=1;
+else v19b=0;
+
+if v36a=0 then v36b=0;
+else v36b=1;
+
+run;
+
+proc freq data=data101110e;
+tables bsrs1a*bsrs1b bsrs2a*bsrs2b bsrs3a*bsrs3b bsrs4a*bsrs4b bsrs5a*bsrs5b/nopercent nocol norow;
+run;
+proc freq data=data101110e;
+tables year*v19a v14a*v14b v15a*v15b v18a*v18b v19a*v19b v36a*v36b/nopercent nocol norow;run;
+
+/*v14=請問您一生中是否曾經認真地想過自殺？*/
+proc logistic data=data101110e;
+class bsrs1b(ref="0")/ param = ref;
+model v14b(ref="0")=bsrs1b;     
+weight w; 
+run;
+
+proc logistic data=data101110e;
+class bsrs2b(ref="0")/ param = ref;
+model v14b(ref="0")=bsrs2b;   
+weight w; 
+run;
+
+proc logistic data=data101110e;
+class bsrs3b(ref="0")/ param = ref;
+model v14b(ref="0")=bsrs3b;  
+weight w; 
+run;
+
+proc logistic data=data101110e;
+class bsrs4b(ref="0")/ param = ref;
+model v14b(ref="0")=bsrs4b;  
+weight w; 
+run;
+
+proc logistic data=data101110e;
+class bsrs5b(ref="0")/ param = ref;
+model v14b(ref="0")=bsrs5b;            
+weight w; 
+run;
+
+
+/*v15=請問您最近一年是否仍認真地想過要自殺？*/
+proc logistic data=data101110e;
+class bsrs1b(ref="0")/ param = ref;
+model v15b(ref="0")=bsrs1b;           
+weight w; 
+run;
+
+proc logistic data=data101110e;
+class bsrs2b(ref="0")/ param = ref;
+model v15b(ref="0")=bsrs2b;            
+weight w; 
+run;
+
+proc logistic data=data101110e;
+class bsrs3b(ref="0")/ param = ref;
+model v15b(ref="0")=bsrs3b;          
+weight w; 
+run;
+
+proc logistic data=data101110e;
+class bsrs4b(ref="0")/ param = ref;
+model v15b(ref="0")=bsrs4b;            
+weight w; 
+run;
+
+proc logistic data=data101110e;
+class bsrs5b(ref="0")/ param = ref;
+model v15b(ref="0")=bsrs5b;           
+weight w; 
+run;
+
+
+/*v18=請問您一生中是否有過自殺行為？*/
+proc logistic data=data101110e;
+class bsrs1b(ref="0")/ param = ref;
+model v18b(ref="0")=bsrs1b;            
+weight w; 
+run;
+
+proc logistic data=data101110e;
+class bsrs2b(ref="0")/ param = ref;
+model v18b(ref="0")=bsrs2b;         
+weight w;                                                                                                                                                                                                                                         
+run;
+
+proc logistic data=data101110e;
+class bsrs3b(ref="0")/ param = ref;
+model v18b(ref="0")=bsrs3b;         
+weight w; 
+run;
+
+proc logistic data=data101110e;
+class bsrs4b(ref="0")/ param = ref;
+model v18b(ref="0")=bsrs4b;           
+weight w; 
+run;
+
+proc logistic data=data101110e;
+class bsrs5b(ref="0")/ param = ref;
+model v18b(ref="0")=bsrs5b;         
+weight w;                                                                                                                                                                                                                                         
+run;
+
+
+/*v19	請問您最近一年是否仍有過自殺行為?*/
+proc logistic data=data101110e;
+class bsrs1b(ref="0")/ param = ref;
+model v19b(ref="0")=bsrs1b;       
+weight w; 
+run;
+
+proc logistic data=data101110e;
+class bsrs2b(ref="0")/ param = ref;
+model v19b(ref="0")=bsrs2b;         
+weight w; 
+run;
+
+proc logistic data=data101110e;
+class bsrs3b(ref="0")/ param = ref;
+model v19b(ref="0")=bsrs3b;         
+weight w; 
+run;
+
+proc logistic data=data101110e;
+class bsrs4b(ref="0")/ param = ref;
+model v19b(ref="0")=bsrs4b;         
+weight w;                                                                                                                                                                                                                                         
+run;
+
+proc logistic data=data101110e;
+class bsrs5b(ref="0")/ param = ref;
+model v19b(ref="0")=bsrs5b;           
+weight w; 
+run;
+
+
+/*v36b=有自殺的想法。*/
+proc logistic data=data101110e;
+class bsrs1b(ref="0")/ param = ref;
+model v36b(ref="0")=bsrs1b;       
+weight w; 
+run;
+
+proc logistic data=data101110e;
+class bsrs2b(ref="0")/ param = ref;
+model v36b(ref="0")=bsrs2b;      
+weight w;                                                                                                                                                                                                                                            
+run;
+
+proc logistic data=data101110e;
+class bsrs3b(ref="0")/ param = ref;
+model v36b(ref="0")=bsrs3b;       
+weight w; 
+run;
+
+proc logistic data=data101110e;
+class bsrs4b(ref="0")/ param = ref;
+model v36b(ref="0")=bsrs4b;    
+weight w;
+run;
+
+proc logistic data=data101110e;
+class bsrs5b(ref="0")/ param = ref;
+model v36b(ref="0")=bsrs5b;   
+weight w; 
+run;
