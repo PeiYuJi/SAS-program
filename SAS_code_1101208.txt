@@ -1,0 +1,318 @@
+libname data "C:\Users\USER\Desktop";
+data report95_11003r; set data.report95_11003r;run;
+
+proc freq data=report95_11003r_1;
+where rpt_y='2020';
+table age age5;
+run;
+
+/*length agecode $8.;*/
+data report95_11003r_1;
+set report95_11003r;
+informat age1 $10. age2 $10.  
+icd_950 $10. icd_952 $10. icd_9520 $10. icd_953 $10. icd_954 $10. icd_955 $10. icd_956 $10. icd_957 $10. icd_958 $10. 
+why_g1_1 $10. why_g1_2 $10. why_g1_3 $10. why_g1_4 $10. why_g1_5 $10. why_g1_6 $10. why_g1_7 $10. why_g1_8 $10. city1 $10.;
+format city z2. gender z1.;
+
+year=rpt_y-1911;
+if age=" " then delete;
+
+if sex='男' then gender=1;
+else if sex='女' then gender=0;
+
+if 0<=age<25 then age1="0-24歲";
+else if 25<=age<35 then age1="25-34歲";
+else if 35<=age<45 then age1="35-44歲";
+else if 45<=age<55 then age1="45-54歲";
+else if 55<=age<65 then age1="55-64歲";
+else if 65<=age then age1="65歲以上";
+
+if 6<=age<12 then age2="6-11歲";
+else if 12<=age<15 then age2="12-14歲";
+else if 15<=age<18 then age2="15-17歲";
+else if 18<=age<22 then age2="18-21歲";
+else age2="其他";
+
+if icd91="以固體或液體物質自殺及自為中毒" | icd92="以固體或液體物質自殺及自為中毒" | icd93="以固體或液體物質自殺及自為中毒" then icd_950="是";
+else icd_950="否";
+if icd91="以家用瓦斯自殺及自為中毒" | icd92="以家用瓦斯自殺及自為中毒" | icd93="以家用瓦斯自殺及自為中毒" then icd_952="是";
+else  icd_952="否";
+if icd91="由其他氣體及蒸氣自殺及自為中毒" | icd92="由其他氣體及蒸氣自殺及自為中毒" | icd93="由其他氣體及蒸氣自殺及自為中毒" then icd_9520="是";
+else  icd_9520="否";
+if icd91="吊死、勒死及窒息之自殺及自傷" | icd92="吊死、勒死及窒息之自殺及自傷" | icd93="吊死、勒死及窒息之自殺及自傷" then icd_953="是";
+else  icd_953="否";
+if icd91="溺水(淹死)自殺及自傷" | icd92="溺水(淹死)自殺及自傷" | icd93="溺水(淹死)自殺及自傷" then icd_954="是";
+else  icd_954="否";
+if icd91="鎗砲及爆炸物自殺及自傷" | icd92="鎗砲及爆炸物自殺及自傷" | icd93="鎗砲及爆炸物自殺及自傷" then icd_955="是";
+else  icd_955="否";
+if icd91="切穿工具自殺及自傷" | icd92="切穿工具自殺及自傷" | icd93="切穿工具自殺及自傷" then icd_956="是";
+else  icd_956="否";
+if icd91="由高處跳下自殺及自傷" | icd92="由高處跳下自殺及自傷" | icd93="由高處跳下自殺及自傷" then icd_957="是";
+else  icd_957="否";
+if icd91="其他及未明示之方式自殺及自傷" | icd92="其他及未明示之方式自殺及自傷" | icd93="其他及未明示之方式自殺及自傷" then icd_958="是";
+else  icd_958="否";
+
+if why_g1="情感／人際關係" | why_g2="情感／人際關係" | why_g3="情感／人際關係" then why_g1_1="是";
+else why_g1_1="否";
+if why_g1="精神健康／物質濫用" | why_g2="精神健康／物質濫用" | why_g3="精神健康／物質濫用" then why_g1_2="是";
+else why_g1_2="否";
+if why_g1="工作／經濟" | why_g2="工作／經濟" | why_g3="工作／經濟" then why_g1_3="是";
+else why_g1_3="否";
+if why_g1="生理疾病" | why_g2="生理疾病" | why_g3="生理疾病" then why_g1_4="是";
+else why_g1_4="否";
+if why_g1="校園學生問題" | why_g2="校園學生問題" | why_g3="校園學生問題" then why_g1_5="是";
+else why_g1_5="否";
+if why_g1="迫害問題" | why_g2="迫害問題" | why_g3="迫害問題" then why_g1_6="是";
+else why_g1_6="否";
+if why_g1="其他" | why_g2="其他" | why_g3="其他" then why_g1_7="是";
+else why_g1_7="否";
+if why_g1="不詳" | why_g2="不詳" | why_g3="不詳" then why_g1_8="是";
+else why_g1_8="否";
+
+if r_county='台中市' then city='03';
+else if r_county='台北市' then city='01';
+else if r_county='台東縣' then city='46';
+else if r_county='台南市' then city='05';
+else if r_county='宜蘭縣' then city='34';
+else if r_county='花蓮縣' then city='45';
+else if r_county='金門縣' then city='90';
+else if r_county='南投縣' then city='38';
+else if r_county='屏東縣' then city='43';
+else if r_county='苗栗縣' then city='35';
+else if r_county='桃園市' then city='32';
+else if r_county='高雄市' then city='07';
+else if r_county='基隆市' then city='11';
+else if r_county='連江縣' then city='91';
+else if r_county='雲林縣' then city='39';
+else if r_county='新北市' then city='31';
+else if r_county='新竹市' then city='12';
+else if r_county='新竹縣' then city='33';
+else if r_county='嘉義市' then city='22';
+else if r_county='嘉義縣' then city='40';
+else if r_county='彰化縣' then city='37';
+else if r_county='澎湖縣' then city='44';
+
+if r_county='台中市' then city1='臺中市';
+else if r_county='台北市' then city1='臺北市';
+else if r_county='台東縣' then city1='臺東縣';
+else if r_county='台南市' then city1='臺南市';
+else if r_county='宜蘭縣' then city1='宜蘭縣';
+else if r_county='花蓮縣' then city1='花蓮縣';
+else if r_county='金門縣' then city1='金門縣';
+else if r_county='南投縣' then city1='南投縣';
+else if r_county='屏東縣' then city1='屏東縣';
+else if r_county='苗栗縣' then city1='苗栗縣';
+else if r_county='桃園市' then city1='桃園市';
+else if r_county='高雄市' then city1='高雄市';
+else if r_county='基隆市' then city1='基隆市';
+else if r_county='連江縣' then city1='連江縣';
+else if r_county='雲林縣' then city1='雲林縣';
+else if r_county='新北市' then city1='新北市';
+else if r_county='新竹市' then city1='新竹市';
+else if r_county='新竹縣' then city1='新竹縣';
+else if r_county='嘉義市' then city1='嘉義市';
+else if r_county='嘉義縣' then city1='嘉義縣';
+else if r_county='彰化縣' then city1='彰化縣';
+else if r_county='澎湖縣' then city1='澎湖縣';
+run;
+
+proc format;
+value gender 
+1='男性'
+0='女性';
+run;
+
+/**********************全國自殺通報分析************************/
+data report109;
+set report95_11003r_1;
+if year=109;
+run;
+
+ods rtf file="D:\紀佩妤的工作資料夾\05.中心報告\111年報告\02.110年度全國及各縣市之自殺死亡資料及自殺通報個案資料\01.Output\附件一、109年全國自殺通報人次.rtf";
+/*ods excel options(start_at="1,1"
+frozen_headers="1"
+frozen_rowheaders="1"
+embedded_titles="yes" 
+ABSOLUTE_COLUMN_WIDTH="20"
+sheet_name='109年全國各年齡層自殺通報人次(占率)' )*/;
+proc tabulate data=report109 S=[just=c] missing;
+title "109年全國各年齡層自殺通報人次(占率)--自殺方式";
+class gender icd_950 icd_952 icd_9520 icd_953 icd_954 icd_955 icd_956 icd_957 icd_958 why_g1_1 why_g1_2 why_g1_3 why_g1_4 why_g1_5 why_g1_6 why_g1_7 why_g1_8/descending missing
+ /*style=[background=lightblue]*/;
+class  age1;
+ /*classlev icd_950 / style= [background=white pretext='a0a0'x];*/
+tables all 
+icd_950="以固體或液體物質自殺及自為中毒"
+icd_952="以家用瓦斯自殺及自為中毒"
+icd_9520="由其他氣體及蒸氣自殺及自為中毒"
+icd_953="吊死、勒死及窒息之自殺及自傷"
+icd_954="溺水(淹死)自殺及自傷"
+icd_955="鎗砲及爆炸物自殺及自傷"
+icd_956="切穿工具自殺及自傷"
+icd_957="由高處跳下自殺及自傷"   
+icd_958="其他及未明示之方式自殺及自傷",age1="年齡"*(gender="性別" all="全部")*(n colpctn="%"*f=5.1 ) all="全部"/nocellmerge MISSTEXT ="0";
+format gender gender.;
+run;
+
+proc tabulate data=report109 S=[just=c] missing;
+title "109年全國各年齡層自殺通報人次(占率)--自殺原因";
+class gender icd_950 icd_952 icd_9520 icd_953 icd_954 icd_955 icd_956 icd_957 icd_958 why_g1_1 why_g1_2 why_g1_3 why_g1_4 why_g1_5 why_g1_6 why_g1_7 why_g1_8/descending missing
+ /*style=[background=lightblue]*/;
+class  age1;
+ /*classlev icd_950 / style= [background=white pretext='a0a0'x];*/
+tables all 
+why_g1_1="情感／人際關係" 
+why_g1_2="精神健康／物質濫用"
+why_g1_3="工作／經濟"
+why_g1_4="生理疾病"
+why_g1_5="校園學生問題"
+why_g1_6="迫害問題"
+why_g1_7="其他"
+why_g1_8="不詳",age1="年齡"*(gender="性別" all="全部")*(n colpctn="%"*f=5.1 ) all="全部"/nocellmerge MISSTEXT ="0";
+format gender gender.;
+run;
+
+/*ods excel options(sheet_name='109年全國學齡層自殺通報人次(占率)' );*/
+proc tabulate data=report109 S=[just=c] missing;
+title "109年全國學齡層自殺通報人次(占率)--自殺方式";
+class gender icd_950 icd_952 icd_9520 icd_953 icd_954 icd_955 icd_956 icd_957 icd_958 why_g1_1 why_g1_2 why_g1_3 why_g1_4 why_g1_5 why_g1_6 why_g1_7 why_g1_8/descending;
+class  age2;
+ tables all 
+icd_950="以固體或液體物質自殺及自為中毒"
+icd_952="以家用瓦斯自殺及自為中毒"
+icd_9520="由其他氣體及蒸氣自殺及自為中毒"
+icd_953="吊死、勒死及窒息之自殺及自傷"
+icd_954="溺水(淹死)自殺及自傷"
+icd_955="鎗砲及爆炸物自殺及自傷"
+icd_956="切穿工具自殺及自傷"
+icd_957="由高處跳下自殺及自傷"   
+icd_958="其他及未明示之方式自殺及自傷",age2="年齡"*(gender="性別" all)*(n colpctn="%"*f=5.1 ) all/nocellmerge MISSTEXT ="0";
+format gender gender.;
+run;
+
+proc tabulate data= report109 S=[just=c] missing;
+title "109年全國學齡層自殺通報人次(占率)--自殺方式";
+class gender icd_950 icd_952 icd_9520 icd_953 icd_954 icd_955 icd_956 icd_957 icd_958 why_g1_1 why_g1_2 why_g1_3 why_g1_4 why_g1_5 why_g1_6 why_g1_7 why_g1_8/descending;
+class  age2;
+ tables all 
+why_g1_1="情感／人際關係" 
+why_g1_2="精神健康／物質濫用"
+why_g1_3="工作／經濟"
+why_g1_4="生理疾病"
+why_g1_5="校園學生問題"
+why_g1_6="迫害問題"
+why_g1_7="其他"
+why_g1_8="不詳",age2="年齡"*(gender="性別" all)*(n colpctn="%"*f=5.1 ) all/nocellmerge MISSTEXT ="0";
+format gender gender.;
+run;
+ods rtf close;
+
+/**********************各縣市自殺通報分析************************/
+ods rtf file="D:\紀佩妤的工作資料夾\05.中心報告\111年報告\02.110年度全國及各縣市之自殺死亡資料及自殺通報個案資料\01.Output\附件二、109年各縣市自殺通報人次.rtf";
+%macro b(number,city,year);
+data report&year.;
+set report95_11003r_1;
+if year=&year.;
+if city1="&city.";
+run;
+/*ods excel options(sheet_name='&number. 109年&city. 各年齡層自殺通報人次(占率)' );*/
+proc tabulate data=report&year. S=[just=c] missing;
+title "109年&city.各年齡層自殺通報人次(占率)--自殺方式";
+class gender icd_950 icd_952 icd_9520 icd_953 icd_954 icd_955 icd_956 icd_957 icd_958 
+why_g1_1 why_g1_2 why_g1_3 why_g1_4 why_g1_5 why_g1_6 why_g1_7 why_g1_8/descending;
+class  age1;
+tables all 
+icd_950="以固體或液體物質自殺及自為中毒" 
+icd_952="以家用瓦斯自殺及自為中毒"  
+icd_9520="由其他氣體及蒸氣自殺及自為中毒"  
+icd_953="吊死、勒死及窒息之自殺及自傷"  
+icd_954="溺水(淹死)自殺及自傷"  
+icd_955="鎗砲及爆炸物自殺及自傷"  
+icd_956="切穿工具自殺及自傷"  
+icd_957="由高處跳下自殺及自傷"   
+icd_958="其他及未明示之方式自殺及自傷",age1="年齡"*(gender="性別" all)*(n colpctn="%"*f=5.1 ) all/nocellmerge MISSTEXT ="0";
+format gender gender.;
+run;
+
+proc tabulate data=report&year. S=[just=c] missing;
+title "109年&city.各年齡層自殺通報人次(占率)--自殺原因";
+class gender icd_950 icd_952 icd_9520 icd_953 icd_954 icd_955 icd_956 icd_957 icd_958 
+why_g1_1 why_g1_2 why_g1_3 why_g1_4 why_g1_5 why_g1_6 why_g1_7 why_g1_8/descending;
+class  age1;
+tables all 
+why_g1_1="情感／人際關係" 
+why_g1_2="精神健康／物質濫用"
+why_g1_3="工作／經濟"
+why_g1_4="生理疾病"
+why_g1_5="校園學生問題"
+why_g1_6="迫害問題"
+why_g1_7="其他"
+why_g1_8="不詳",age1="年齡"*(gender="性別" all)*(n colpctn="%"*f=5.1 ) all/nocellmerge MISSTEXT ="0";
+format gender gender.;
+run;
+
+proc tabulate data=report&year. S=[just=c] missing;
+title "109年&city.學齡層自殺通報人次(占率)--自殺方式";
+class gender icd_950 icd_952 icd_9520 icd_953 icd_954 icd_955 icd_956 icd_957 icd_958 
+why_g1_1 why_g1_2 why_g1_3 why_g1_4 why_g1_5 why_g1_6 why_g1_7 why_g1_8/descending;
+class  age2;
+tables all 
+icd_950="以固體或液體物質自殺及自為中毒" 
+icd_952="以家用瓦斯自殺及自為中毒"  
+icd_9520="由其他氣體及蒸氣自殺及自為中毒"  
+icd_953="吊死、勒死及窒息之自殺及自傷"  
+icd_954="溺水(淹死)自殺及自傷"  
+icd_955="鎗砲及爆炸物自殺及自傷"  
+icd_956="切穿工具自殺及自傷"  
+icd_957="由高處跳下自殺及自傷"   
+icd_958="其他及未明示之方式自殺及自傷",age2="年齡"*(gender="性別" all)*(n colpctn="%"*f=5.1 ) all/nocellmerge MISSTEXT ="0";
+format gender gender.;
+run;
+
+proc tabulate data=report&year. S=[just=c] missing;
+title "109年&city.學齡層自殺通報人次(占率)--自殺原因";
+class gender icd_950 icd_952 icd_9520 icd_953 icd_954 icd_955 icd_956 icd_957 icd_958 
+why_g1_1 why_g1_2 why_g1_3 why_g1_4 why_g1_5 why_g1_6 why_g1_7 why_g1_8/descending;
+class  age2;
+tables all 
+why_g1_1="情感／人際關係" 
+why_g1_2="精神健康／物質濫用"
+why_g1_3="工作／經濟"
+why_g1_4="生理疾病"
+why_g1_5="校園學生問題"
+why_g1_6="迫害問題"
+why_g1_7="其他"
+why_g1_8="不詳",age2="年齡"*(gender="性別" all)*(n colpctn="%"*f=5.1 ) all/nocellmerge MISSTEXT ="0";
+format gender gender.;
+run;
+
+%mend;
+%b(01.,新北市,109);%b(02.,臺北市,109);%b(03.,桃園市,109);%b(04.,臺中市,109);%b(05.,臺南市,109);%b(06.,高雄市,109);%b(07.,宜蘭縣,109);%b(08.,新竹縣,109);
+%b(09.,苗栗縣,109);%b(10.,彰化縣,109);%b(11.,南投縣,109);%b(12.,雲林縣,109);%b(13.,嘉義縣,109);%b(14.,屏東縣,109);%b(15.,臺東縣,109);%b(16.,花蓮縣,109);
+%b(17.,澎湖縣,109);%b(18.,基隆市,109);%b(19.,新竹市,109);%b(20.,嘉義市,109);%b(21.,金門縣,109);%b(22.,連江縣,109);
+
+ods rtf close;
+
+
+/***********************************************特殊身分註記************************/
+proc freq data=report95_11003r_1;
+where rpt_y in ('2020');
+tables rpt_y*(mh_past mh_control serious_pt dv_hi_i dv_hi_v dv_i dv_v youth_i youth_v sexual_i abor_i alternative_t drug_a);
+run;
+
+data report109;
+set report95_11003r_1;
+if year=109;
+run;
+
+ods rtf file="D:\紀佩妤的工作資料夾\05.中心報告\111年報告\02.110年度全國及各縣市之自殺死亡資料及自殺通報個案資料\01.Output\附件三、109年特殊身分註記自殺通報人次.rtf";
+proc tabulate data=report109 S=[just=c] missing;
+title "109年特殊身分註記自殺通報人次";
+class city1 mh_past mh_control serious_pt dv_hi_i dv_hi_v dv_i dv_v youth_i youth_v sexual_i abor_i alternative_t drug_a/descending;
+tables all city1="通報縣市" ,(mh_past="過去精神疾病史" mh_control="精照列管" serious_pt="嚴重病人" dv_hi_i="家暴高危加害人" dv_hi_v="家暴高危被害人"
+dv_i="家暴加害人" dv_v="家暴被害人" youth_i="兒少加害人" youth_v="兒少被害人" sexual_i="性侵加害人" abor_i="原住民" alternative_t="替代治療列管"
+drug_a="毒藥品列管")*(n colpctn="%") all*(n colpctn="%")/nocellmerge MISSTEXT ="0";
+run;
+ods rtf close;
+
+
